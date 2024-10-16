@@ -2,33 +2,71 @@ dialogs = [
     ("A", "Hello..."),
     ("A", "It's been a long time since we last met."),
     ("A", "How are you?"),
-    ("B", "Me? Good actually."),
-    ("B", "And... nice to see you by the way."),
-    ("A", "Yeah, it's been too long."),
-    ("A", "So, what have you been up to lately?"),
-    ("B", "Oh, nothing much, just keeping busy with work."),
-    ("B", "What about you? Any exciting news?"),
-    ("A", "Well, actually, I've been working on a project lately."),
-    ("A", "It's a bit of a secret for now, but I think you'll love it."),
-    ("B", "Sounds intriguing! Can't wait to hear more about it."),
-    ("B", "When do you plan to reveal this mysterious project?"),
-    ("A", "Soon! Just a few more things to sort out."),
-    ("B", "I'm excited already! Let me know when you're ready."),
+    # Decision point for B
 ]
 
-pastSpeaker = None
-currentSpeaker = None
+def show_dialog(dialogs):
+    past_speaker = None
 
-for dialog in dialogs:
-    currentSpeaker = dialog[0]
+    for dialog in dialogs:
+        current_speaker = dialog[0]
 
-    if currentSpeaker == pastSpeaker:
-        pass
-    else:
-        print(currentSpeaker + ":")
+        if current_speaker != past_speaker:
+            print(f"\n{current_speaker}:")
+        
+        print(f"{dialog[1]}", end="")
+        input()  # Wait for user input to simulate continuation
 
-    print(dialog[1], end="")
+        past_speaker = current_speaker
 
-    pastSpeaker = currentSpeaker
+def get_decision():
+    print("\nB: How should I respond?")
+    print("1. I'm doing well, thanks!")
+    print("2. Not great, to be honest.")
+    print("3. Busy as usual, you know.")
+    
+    decision = input("Choose your response (1, 2, or 3): ")
+    return decision
 
-    input()
+# Start of conversation
+show_dialog(dialogs[:3])
+
+# Decision point for "B"
+decision = get_decision()
+
+if decision == "1":
+    branch_dialogs = [
+        ("B", "I'm doing well, thanks!"),
+        ("A", "That's great to hear!"),
+        ("A", "What have you been up to lately?"),
+        ("B", "Just the usual stuff. How about you?"),
+        ("A", "Same here, keeping busy."),
+    ]
+elif decision == "2":
+    branch_dialogs = [
+        ("B", "Not great, to be honest."),
+        ("A", "Oh no, I'm sorry to hear that."),
+        ("A", "Is everything okay?"),
+        ("B", "Yeah, just dealing with some personal stuff."),
+        ("A", "I'm here if you need someone to talk to."),
+    ]
+elif decision == "3":
+    branch_dialogs = [
+        ("B", "Busy as usual, you know."),
+        ("A", "Yeah, I can relate. Life has been hectic."),
+        ("A", "But it's good to stay productive, right?"),
+        ("B", "Absolutely! Can't complain."),
+        ("A", "Glad to hear you're doing well."),
+    ]
+else:
+    print("Invalid choice! Let's go with a default response.")
+    branch_dialogs = [
+        ("B", "I'm doing well, thanks!"),
+        ("A", "That's great to hear!"),
+        ("A", "What have you been up to lately?"),
+        ("B", "Just the usual stuff. How about you?"),
+        ("A", "Same here, keeping busy."),
+    ]
+
+# Continue the conversation based on the decision
+show_dialog(branch_dialogs)
